@@ -13,6 +13,22 @@ library(ggplot2)
 
 
 ```{r}
+df <- tidytuesdayR::tt_load('2020-10-06')
 
+tournament <- df$tournament
+```
+
+
+# Data Exploration
+```{r}
+summary(tournament)
+```
+
+```{r}
+plot(y = tournament$conf_w, x = tournament$conf_l)
+```
+
+```{r}
+unique(tournament$year)
 ```
 
