@@ -1,0 +1,38 @@
+---
+title: "2020_09_29"
+author: "Garren Moss"
+date: "10/17/2020"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+
+```
+
+
+```{r}
+tt <- tidytuesdayR::tt_load('2020-09-29')
+```
+
+```{r}
+head(tt$charts)
+```
+
+```{r}
+head(tt$sales)
+```
+```{r}
+head(tt$beyonce_lyrics)
+```
+
+```{r}
+head(tt$taylor_swift_lyrics)
+```
+
+```{r}
+unique(tt$sales$formats)
+```
+
