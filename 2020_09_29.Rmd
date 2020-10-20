@@ -17,22 +17,37 @@ library(ggplot2)
 tt <- tidytuesdayR::tt_load('2020-09-29')
 ```
 
+#Taylor Swift's Fearless the highest grossing album provided
+
 ```{r}
-head(tt$charts)
+tt$sales %>% 
+  filter(country %in% c('WW', 'World')) %>%
+  arrange(desc(sales)) %>%
+  top_n(10, sales) %>%
+  select(artist, title, sales)
+
 ```
 
 ```{r}
-head(tt$sales)
-```
-```{r}
-head(tt$beyonce_lyrics)
+tt$taylor_swift_lyrics$Lyrics %>% filter(Album == 'Fearless')
 ```
 
 ```{r}
-head(tt$taylor_swift_lyrics)
-```
+library(tidytext)
+library(textdata1)
+data(stop_words)
 
-```{r}
-unique(tt$sales$formats)
+tidy_lyrics <- tt$taylor_swift_lyrics %>%
+   unnest_tokens(word, Lyrics) %>% 
+   anti_join(stop_words, by=c("word"="word")) 
+
+# Look at the most popular words
+#tidy_lyrics %>%
+#  count(word, sort = TRUE) 
+
+tidy_lyrics %>%
+  left_join(get_sentiments("nrc"))
+
+
 ```
 
