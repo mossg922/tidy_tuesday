@@ -29,25 +29,49 @@ tt$sales %>%
 ```
 
 ```{r}
-tt$taylor_swift_lyrics$Lyrics %>% filter(Album == 'Fearless')
+tt$taylor_swift_lyrics %>% filter(Album == 'Fearless')
 ```
 
 ```{r}
+
 library(tidytext)
-library(textdata1)
+library(textdata)
 data(stop_words)
 
 tidy_lyrics <- tt$taylor_swift_lyrics %>%
-   unnest_tokens(word, Lyrics) %>% 
-   anti_join(stop_words, by=c("word"="word")) 
+   filter(Album == 'Fearless') %>%
+   unnest_tokens(word, Lyrics) #%>% anti_join(stop_words, by=c("word"="word")) 
+
+
+tidy_lyrics$Title <- factor(trimws(tidy_lyrics$`Title `), levels = c('Fearless',
+                                                                     'Fifteen',
+                                                                     'Love Story', 
+                                                                     'Hey Stephen',
+                                                                     'White Horse',
+                                                                     'You Belong With Me',
+                                                                     'Breathe',
+                                                                     'Tell Me Why',
+                                                                     "You're Not Sorry",
+                                                                     'The Way I Loved You',
+                                                                     'Forever & Always',
+                                                                     'The Best Day',
+                                                                     'Change'))
 
 # Look at the most popular words
 #tidy_lyrics %>%
 #  count(word, sort = TRUE) 
 
-tidy_lyrics %>%
-  left_join(get_sentiments("nrc"))
+lyricSentimnt <- tidy_lyrics %>%
+  left_join(get_sentiments("nrc")) %>% arrange(Title) %>%
+  select(Title, word, sentiment) %>% 
+  filter(!is.na(sentiment), !is.na(Title)) %>%
+  group_by(Title, sentiment) %>%
+  summarise(n = n()) %>%
+  mutate(percnt = n/sum(n)) %>%
+  arrange(Title)
+```
 
-
+```{r}
+ggplot()
 ```
 
